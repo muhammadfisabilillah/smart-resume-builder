@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware 
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from google import genai
@@ -10,6 +11,15 @@ load_dotenv()
 
 # Inisialisasi FastAPI
 app = FastAPI()
+
+# --- BLOK CORS (Pastikan bagian ini masuk) ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Mengizinkan Next.js frontend akses API
+    allow_credentials=True,
+    allow_methods=["*"],                      # Mengizinkan semua method (GET, POST, dll)
+    allow_headers=["*"],                      # Mengizinkan semua headers
+)
 
 # Inisialisasi Client Gemini menggunakan API Key dari .env
 api_key = os.getenv("GEMINI_API_KEY")
